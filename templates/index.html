@@ -1,44 +1,53 @@
 <!DOCTYPE html>
 <html lang="fr">
-<title>Croque-Livre</title>
-
-<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-<script src="{{ url_for('static', filename='app.js') }}"></script>
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Croque-Livre — Catalogue</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
 
     <header>
         <h1>📚 Catalogue Croque-Livre</h1>
+        <p>Découvrez notre collection de livres</p>
     </header>
 
     <main>
 
+        <!-- Barre de recherche -->
+        <section id="search-section">
+            <input type="text" id="search-input" placeholder="Rechercher un livre...">
+        </section>
+
         <!-- Liste des livres -->
         <section id="books-section">
             <h2>Livres disponibles</h2>
-            <div id="books-container" class="grid"></div>
+            <div id="books-container" class="grid">
+                <!-- Exemple de carte livre -->
+                <div class="book-card">
+                    <div class="book-title">Titre du Livre</div>
+                    <div class="book-author">Auteur: Nom de l'Auteur</div>
+                    <div class="book-date">Date de publication: 2023</div>
+                    <div class="book-genre">Genre: Fiction</div>
+                </div>
+            </div>
         </section>
 
-        <!-- Scanner QR (placeholder) -->
+        <!-- Scanner QR -->
         <section id="qr-section">
             <h2>📷 Scanner QR</h2>
-            <!-- Le scanner sera intégré ici -->
+            <p>Scannez le code QR d'un livre pour l'ajouter à la collection.</p>
             <div id="qr-scanner">
-                <!-- Ex: html5-qrcode scanner -->
+                <!-- Le scanner sera intégré ici -->
             </div>
+            <button id="start-scan">Démarrer le scan</button>
         </section>
 
     </main>
 
-    <!-- Optional: html5-qrcode lib (pour scanner QR) -->
+    <!-- Scripts -->
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-
-    <script src="app.js"></script>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 </html>

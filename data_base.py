@@ -68,6 +68,8 @@ def check(manager):
     data = manager.load_data()
     name = input("name: ")
     genre = input("genre: ")
+    author = input("author: ")
+    date = input("date: ")
     
     # Find and update existing entry
     for book in data:
@@ -81,7 +83,7 @@ def check(manager):
             break
 
     if not found:
-        data.append({"name": name, "genre": genre, "number": number})
+        data.append({"name": name, "genre": genre, "author": author, "date": date, "number": number})
         print(f"Added new book '{name}' as number {number}")
 
     manager.save_data(data)
@@ -121,13 +123,13 @@ def searching(manager):
         if choice == 'name':
             for book in data:
                 clear_terminal()
-                print(f"Name: {book['name']}")
+                print(f"Name: {book['name']}, Author: {book.get('author', 'Unknown')}, Date: {book.get('date', 'Unknown')}")
                 accepted = False
                 
         elif choice == 'genre':
             for book in data:
                 clear_terminal()
-                print(f"Genre: {book['genre']}")
+                print(f"Genre: {book['genre']}, Name: {book['name']}")
                 accepted = False
     
         
