@@ -3,7 +3,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     loadBooks();
     setupSearch();
-    setupScanner();
+    setupAddSection();
 });
 
 function loadBooks() {
@@ -77,7 +77,28 @@ function setupSearch() {
     });
 }
 
-function setupScanner() {
+function setupAddSection() {
+    // Toggle buttons
+    const toggleScan = document.getElementById('toggle-scan');
+    const toggleManual = document.getElementById('toggle-manual');
+    const scanMode = document.getElementById('scan-mode');
+    const manualMode = document.getElementById('manual-mode');
+
+    toggleScan.addEventListener('click', function() {
+        toggleScan.classList.add('active');
+        toggleManual.classList.remove('active');
+        scanMode.style.display = 'block';
+        manualMode.style.display = 'none';
+    });
+
+    toggleManual.addEventListener('click', function() {
+        toggleManual.classList.add('active');
+        toggleScan.classList.remove('active');
+        manualMode.style.display = 'block';
+        scanMode.style.display = 'none';
+    });
+
+    // Scanner functionality
     const startScanBtn = document.getElementById('start-scan');
     const qrScanner = document.getElementById('qr-scanner');
 
@@ -95,5 +116,46 @@ function setupScanner() {
             qrScanner.classList.remove('active');
             qrScanner.innerHTML = '<!-- Le scanner sera intégré ici -->';
         }, 5000); // Simuler 5 secondes
+    });
+
+    // Manual add form
+    const addForm = document.getElementById('manual-add-form');
+    addForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const bookData = {
+            name: document.getElementById('book-name').value,
+            author: document.getElementById('book-author').value,
+            date: document.getElementById('book-date').value,
+            genre: document.getElementById('book-genre').value
+        };
+
+        addBook(bookData);
+    });
+}
+
+function addBook(bookData) {
+    fetch('/api/books', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(bookData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Livre ajouté avec succès!');
+            // Clear form
+            document.getElementById('manual-add-form').reset();
+            // Reload books
+            loadBooks();
+        } else {
+            alert('Erreur lors de l\'ajout du livre: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Erreur:', error);
+        alert('Erreur lors de l\'ajout du livre');
     });
 }

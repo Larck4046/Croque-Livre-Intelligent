@@ -34,14 +34,48 @@
             </div>
         </section>
 
-        <!-- Scanner QR -->
-        <section id="qr-section">
-            <h2>📷 Scanner QR</h2>
-            <p>Scannez le code QR d'un livre pour l'ajouter à la collection.</p>
-            <div id="qr-scanner">
-                <!-- Le scanner sera intégré ici -->
+        <!-- Scanner QR et Ajout Manuel -->
+        <section id="add_section">
+            <h2>📷 Ajouter un Livre</h2>
+            
+            <!-- Boutons de basculement -->
+            <div class="add-toggle">
+                <button id="toggle-scan" class="toggle-btn active">Scanner QR</button>
+                <button id="toggle-manual" class="toggle-btn">Ajout Manuel</button>
             </div>
-            <button id="start-scan">Démarrer le scan</button>
+
+            <!-- Section Scanner QR -->
+            <div id="scan-mode" class="add-mode">
+                <p>Scannez le code QR d'un livre pour l'ajouter à la collection.</p>
+                <div id="qr-scanner">
+                    <!-- Le scanner sera intégré ici -->
+                </div>
+                <button id="start-scan">Démarrer le scan</button>
+            </div>
+
+            <!-- Section Ajout Manuel -->
+            <div id="manual-mode" class="add-mode" style="display: none;">
+                <p>Remplissez les informations du livre manuellement.</p>
+                <form id="manual-add-form">
+                    <div class="form-group">
+                        <label for="book-name">Titre du livre:</label>
+                        <input type="text" id="book-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="book-author">Auteur:</label>
+                        <input type="text" id="book-author" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="book-date">Date de publication:</label>
+                        <input type="text" id="book-date" placeholder="ex: 2023">
+                    </div>
+                    <div class="form-group">
+                        <label for="book-genre">Genre:</label>
+                        <input type="text" id="book-genre" placeholder="ex: Fiction">
+                    </div>
+                    <button type="submit" id="add-book-btn">Ajouter le livre</button>
+                </form>
+            </div>
         </section>
 
     </main>
