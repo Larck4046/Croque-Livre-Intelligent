@@ -30,6 +30,8 @@
                     <div class="book-author">Auteur: Nom de l'Auteur</div>
                     <div class="book-date">Date de publication: 2023</div>
                     <div class="book-genre">Genre: Fiction</div>
+                    <div class="book-number">Exemplaires: 1</div>
+                    <button class="book-remover">Emprunter</button>
                 </div>
             </div>
         </section>
@@ -74,6 +76,14 @@
                         <input type="text" id="book-genre" placeholder="ex: Fiction">
                     </div>
                     <button type="submit" id="add-book-btn">Ajouter le livre</button>
+                </form>
+                <p>Où ajouter manuellement le code ISBN (les chiffres proche du code bar)</p>
+                <form id="manual-add-isbn">
+                    <div class="form-group">
+                        <label for="book-isbn">Code ISBN:</label>
+                        <input type="text" id="book-isbn" placeholder="ex: 978-3-16-148410-0">
+                    </div>
+                    <button type="submit" id="add-book-isbn-btn">Ajouter le livre par ISBN</button>
                 </form>
             </div>
         </section>

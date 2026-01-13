@@ -7,8 +7,8 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: #333;
+    background: linear-gradient(135deg, #8b4513 0%, #6d3107dc 100%);
+    color: #000000;
     min-height: 100vh;
     padding: 20px;
 }
@@ -16,7 +16,7 @@ body {
 header {
     text-align: center;
     margin-bottom: 30px;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(238, 202, 173, 0.9);
     padding: 20px;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -24,13 +24,13 @@ header {
 
 h1 {
     font-size: 2.5rem;
-    color: #2a2a72;
+    color: #8B4513;
     margin-bottom: 10px;
 }
 
 header p {
     font-size: 1.1rem;
-    color: #666;
+    color: #654321;
 }
 
 section {
@@ -44,7 +44,7 @@ section {
 h2 {
     font-size: 1.8rem;
     margin-bottom: 20px;
-    color: #444;
+    color: #654321;
     text-align: center;
 }
 
@@ -57,14 +57,14 @@ h2 {
     width: 100%;
     padding: 12px;
     font-size: 1rem;
-    border: 2px solid #ddd;
+    border: 2px solid #F5DEB3;
     border-radius: 25px;
     outline: none;
     transition: border-color 0.3s ease;
 }
 
 #search-input:focus {
-    border-color: #667eea;
+    border-color: #D2691E;
 }
 
 /* Grid pour les cartes livres */
@@ -92,7 +92,7 @@ h2 {
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #667eea, #764ba2);
+    background: linear-gradient(90deg, #D2691E, #FF6347);
     transform: scaleX(0);
     transition: transform 0.3s ease;
 }
@@ -110,13 +110,13 @@ h2 {
     font-size: 1.3rem;
     font-weight: bold;
     margin-bottom: 10px;
-    color: #2a2a72;
+    color: #8B4513;
 }
 
 .book-author, .book-date, .book-genre {
     font-size: 0.95rem;
     margin-bottom: 8px;
-    color: #666;
+    color: #654321;
 }
 
 .book-author::before {
@@ -131,33 +131,56 @@ h2 {
     content: "📖 ";
 }
 
-/* Scanner QR area */
+.book-number {
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+    color: #654321;
+    font-weight: bold;
+}
+
+.book-remover {
+    display: block;
+    margin: 10px auto 0;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #D2691E 0%, #FF6347 100%);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.book-remover:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(210, 105, 30, 0.4);
+}
 #qr-scanner {
     width: 100%;
     max-width: 400px;
     height: 400px;
     margin: 20px auto;
-    border: 2px dashed #888;
+    border: 2px dashed #8B4513;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #888;
+    color: #8B4513;
     font-size: 1rem;
-    background: #f9f9f9;
+    background: #F5F5DC;
     transition: border-color 0.3s ease;
 }
 
 #qr-scanner.active {
-    border-color: #667eea;
-    background: #fff;
+    border-color: #D2691E;
+    background: #FFFFFF;
 }
 
 #start-scan {
     display: block;
     margin: 20px auto;
     padding: 12px 24px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #D2691E 0%, #FF6347 100%);
     color: white;
     border: none;
     border-radius: 25px;
@@ -168,7 +191,7 @@ h2 {
 
 #start-scan:hover {
     transform: scale(1.05);
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 4px 15px rgba(210, 105, 30, 0.4);
 }
 
 /* Toggle buttons */
@@ -181,8 +204,8 @@ h2 {
 .toggle-btn {
     padding: 10px 20px;
     margin: 0 5px;
-    background: #f0f0f0;
-    border: 2px solid #ddd;
+    background: #F5DEB3;
+    border: 2px solid #D2691E;
     border-radius: 25px;
     font-size: 1rem;
     cursor: pointer;
@@ -190,9 +213,9 @@ h2 {
 }
 
 .toggle-btn.active {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #D2691E 0%, #FF6347 100%);
     color: white;
-    border-color: #667eea;
+    border-color: #D2691E;
 }
 
 .toggle-btn:hover {
@@ -208,13 +231,13 @@ h2 {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
-    color: #444;
+    color: #654321;
 }
 
 .form-group input {
     width: 100%;
     padding: 10px;
-    border: 2px solid #ddd;
+    border: 2px solid #F5DEB3;
     border-radius: 8px;
     font-size: 1rem;
     transition: border-color 0.3s ease;
@@ -222,14 +245,14 @@ h2 {
 
 .form-group input:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #D2691E;
 }
 
 #add-book-btn {
     display: block;
     margin: 20px auto 0;
     padding: 12px 24px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #D2691E 0%, #FF6347 100%);
     color: white;
     border: none;
     border-radius: 25px;
@@ -240,10 +263,26 @@ h2 {
 
 #add-book-btn:hover {
     transform: scale(1.05);
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 4px 15px rgba(210, 105, 30, 0.4);
 }
 
-/* Responsive */
+#add-book-isbn-btn {
+    display: block;
+    margin: 20px 0 0 0;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #D2691E 0%, #FF6347 100%);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#add-book-isbn-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(210, 105, 30, 0.4);
+}
 @media (max-width: 768px) {
     .grid {
         grid-template-columns: 1fr;

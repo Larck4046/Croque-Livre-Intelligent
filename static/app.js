@@ -20,19 +20,22 @@ function loadBooks() {
                     name: "Le Petit Prince",
                     author: "Antoine de Saint-Exupéry",
                     date: "1943",
-                    genre: "Conte philosophique"
+                    genre: "Conte philosophique",
+                    number: 3
                 },
                 {
                     name: "1984",
                     author: "George Orwell",
                     date: "1949",
-                    genre: "Dystopie"
+                    genre: "Dystopie",
+                    number: 2
                 },
                 {
                     name: "Harry Potter à l'école des sorciers",
                     author: "J.K. Rowling",
                     date: "1997",
-                    genre: "Fantasy"
+                    genre: "Fantasy",
+                    number: 1
                 }
             ];
             displayBooks(sampleBooks);
@@ -51,11 +54,21 @@ function displayBooks(books) {
             <div class="book-author">Auteur: ${book.author}</div>
             <div class="book-date">Date de publication: ${book.date}</div>
             <div class="book-genre">Genre: ${book.genre}</div>
+            <div class="book-number">Exemplaires: ${book.number}</div>
+            <button class="book-remover">Emprunter</button>
         `;
 
-        // Ajouter un effet au clic
-        card.addEventListener('click', () => {
-            alert(`Détails de "${book.name}"\nAuteur: ${book.author}\nDate: ${book.date}\nGenre: ${book.genre}`);
+        // Ajouter un effet au clic sur la carte (sauf le bouton)
+        card.addEventListener('click', (e) => {
+            if (e.target.className !== 'book-remover') {
+                alert(`Détails de "${book.name}"\nAuteur: ${book.author}\nDate: ${book.date}\nGenre: ${book.genre}\nExemplaires: ${book.number}`);
+            }
+        });
+
+        // Bouton emprunter
+        const borrowBtn = card.querySelector('.book-remover');
+        borrowBtn.addEventListener('click', () => {
+            borrowBook(book.name);
         });
 
         container.appendChild(card);
@@ -132,6 +145,21 @@ function setupAddSection() {
 
         addBook(bookData);
     });
+
+    // ISBN scan form
+    const isbnForm = document.getElementById('manual-add-isbn');
+    isbnForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const isbn = document.getElementById('book-isbn').value.trim();
+        
+        if (!isbn) {
+            alert('Veuillez entrer un code ISBN');
+            return;
+        }
+
+        scanISBN(isbn);
+    });
 }
 
 function addBook(bookData) {
@@ -157,5 +185,66 @@ function addBook(bookData) {
     .catch(error => {
         console.error('Erreur:', error);
         alert('Erreur lors de l\'ajout du livre');
+    });
+}
+
+function scanISBN(isbn) {
+    // Afficher un message de chargement
+    const submitBtn = document.getElementById('add-book-isbn-btn');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Recherche en cours...';
+    submitBtn.disabled = true;
+
+    fetch('/api/scan-isbn', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ isbn: isbn })
+    })
+    .then(response => response.json())
+    .then(data => {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+
+        if (data.success) {
+            alert(`Livre trouvé et ajouté!\nTitre: ${data.book.name}\nAuteur: ${data.book.author}\nDate: ${data.book.date}`);
+            // Clear ISBN form
+            document.getElementById('manual-add-isbn').reset();
+            // Reload books
+            loadBooks();
+        } else {
+            alert('Erreur: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Erreur:', error);
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+        alert('Erreur lors de la recherche du livre');
+    });
+}
+
+function borrowBook(bookName) {
+    fetch('/api/borrow', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name: bookName })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Livre emprunté avec succès!');
+            // Reload books
+            loadBooks();
+        } else {
+            alert('Erreur: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Erreur:', error);
+        alert('Erreur lors de l\'emprunt du livre');
     });
 }
