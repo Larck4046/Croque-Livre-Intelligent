@@ -1,6 +1,19 @@
 import requests as r
 import re
 from bs4 import BeautifulSoup
+""""
+Yo,
+Je veux que tu trouve un moyen que lorsque qu'on lance le main_script.py,
+il puisse exécuter le scanner.py et récupérer les informations du livre scanné.
+En gros, quand tu vas dans la section ajout d'un livre par ISBN manuellement, ton code n'arrive pas, ou n'essaye pas, à récupérer les infos que le mainscript.py envoie au scanner.py.
+
+Main_script.py (isbn) -> scanner.py reppond (wsp scan le livre twin (aucune reception du message de main_script.py))
+
+"""
+
+
+
+
 class Scan:
     def __init__(self,code):
         self.code = code

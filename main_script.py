@@ -82,9 +82,12 @@ def scan_isbn():
         
         if not isbn:
             return jsonify({'success': False, 'message': 'ISBN requis'}), 400
-        
         # Utiliser la classe Scan pour récupérer les infos
         from scanner import Scan  # Import de la classe Scan
+
+        """
+        ICI dawg que le scanner.py est call
+        """
 
         scanner = Scan(isbn)
         
