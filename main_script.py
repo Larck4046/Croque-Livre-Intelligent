@@ -89,7 +89,7 @@ def scan_isbn():
         ICI dawg que le scanner.py est call
         """
 
-        scanner = Scan(isbn)
+        scanner = Scan.receiver(isbn)
         
         # Essayer Google Books API
         google_success = scanner.googleapi()

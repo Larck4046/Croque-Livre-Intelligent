@@ -77,27 +77,27 @@ class Scan:
             return True
         except(KeyError, AttributeError):
             return False
-
-
-            
-S = Scan(input("Wsp scan le livre twin\n"))
-if S.googleapi():
-    if S.bookfinder():
-        if re.sub(r"[^a-z0-9]", "", S.db1.lower().strip().replace("é","e")) == re.sub(r"[^a-z0-9]", "", S.db2.lower().strip().replace("é","e")):
-            print(f"- Titre: {S.titre_G}\n- Auteur: {S.auteur_G}\n- Date de sortie: {S.date_G}\n- Langue: {S.language_G}\n- Description: {S.description_G}")
+    def receiver(isbn):
+        print(f"Scanning ISBN: {isbn}")
+        S = Scan(isbn)
+        if S.googleapi():
+            if S.bookfinder():
+                if re.sub(r"[^a-z0-9]", "", S.db1.lower().strip().replace("é","e")) == re.sub(r"[^a-z0-9]", "", S.db2.lower().strip().replace("é","e")):
+                    print(f"- Titre: {S.titre_G}\n- Auteur: {S.auteur_G}\n- Date de sortie: {S.date_G}\n- Langue: {S.language_G}\n- Description: {S.description_G}")
+                else:
+                    print("NOT match")
+                    result = input(f"1: {S.titre_G} par {S.auteur_G} ({S.date_G})\n2: {S.titre_B} par {S.auteur_B} ({S.date_B})\n3: Autre")
+                    # Input handling, database pulling, bars flowing
+            else:
+                print("GoogleAPI")
+                print(f"- Titre: {S.titre_G}\n- Auteur: {S.auteur_G}\n- Date de sortie: {S.date_G}\n- Langue: {S.language_G}\n- Description: {S.description_G}")
+        elif S.bookfinder():
+            print("Bookfinder")
+            print(f"- Titre: {S.titre_B}\n- Auteur: {S.auteur_B}\n- Date de sortie: {S.date_B}\n- Langue: {S.language_B}")
         else:
-            print("NOT match")
-            result = input(f"1: {S.titre_G} par {S.auteur_G} ({S.date_G})\n2: {S.titre_B} par {S.auteur_B} ({S.date_B})\n3: Autre")
-            # Input handling, database pulling, bars flowing
-    else:
-        print("GoogleAPI")
-        print(f"- Titre: {S.titre_G}\n- Auteur: {S.auteur_G}\n- Date de sortie: {S.date_G}\n- Langue: {S.language_G}\n- Description: {S.description_G}")
-elif S.bookfinder():
-    print("Bookfinder")
-    print(f"- Titre: {S.titre_B}\n- Auteur: {S.auteur_B}\n- Date de sortie: {S.date_B}\n- Langue: {S.language_B}")
-else:
-    print("Livre introuvable parmi 190 millions de livres")
-    # input nom, auteur, etc. pour mettre dans database (database.py)
+            print("Livre introuvable parmi 190 millions de livres")
+            # input nom, auteur, etc. pour mettre dans database (database.py)
+
 
 
 # Test ISBN: 9782072947407 (La ferme des animaux de George Orwell, shoutout les cours de français et la révolution russe)
