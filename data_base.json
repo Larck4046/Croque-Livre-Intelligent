@@ -1,1 +1,16 @@
-[]
+[
+    {
+        "name": "No\u00e9mie Boucher",
+        "genre": "Romance",
+        "author": "Marek",
+        "date": "2026",
+        "number": 1
+    },
+    {
+        "name": "Anthony",
+        "genre": "Sci",
+        "author": "Marek",
+        "date": "2026",
+        "number": 1
+    }
+]
