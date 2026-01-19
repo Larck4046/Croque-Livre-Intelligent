@@ -32,47 +32,35 @@ class FileManager:
     def quit(self):
         shutil.copy('data_base.json', 'data_base.json.old')
     
-        
-        
-def add_remove():
-    print("Oublie pas de sauvegarder dans le fichier Anthony!!!")
-    
-    while True:
-        path = '/api/books.json'
-        manager = FileManager(path)
-        
-        choice = input("Select between adding or removing a book (add/remove/searching/quit)")
-        
-        if choice.strip().lower() == "add":
-            check(manager)
-            sleep(1)
-        elif choice.strip().lower() == "remove":
-            remove(manager)
-            sleep(1)
-        elif choice.strip().lower() == "searching":
-            searching(manager)
-            sleep(1)
-        elif choice.strip().lower() == "quit":
-            exit_prog(manager)
-            break
+    def add_remove(self,choice,data):
+        # Non-interactive dispatcher for web/API usage.
+        if choice == 0:
+            check(self, data)
+        elif choice == 1:
+            remove(self, data)
+        elif choice == 2:
+            searching(self)
+        elif choice == 3 or choice is None:
+            exit_prog(self)
         else:
+            # Unknown choice: no-op
             pass
             
 
 
 
 
-def check(manager):
+def check(manager,data):
     number = 1
     found = False
-    data = manager.load_data()
-    name = input("name: ")
-    genre = input("genre: ")
-    author = input("author: ")
-    date = input("date: ")
-    
+    db = manager.load_data()
+    name = data["name"]
+    genre = data["genre"]
+    author = data["author"]
+    date = data["date"]
+
     # Find and update existing entry
-    for book in data:
+    for book in db:
         
         if book["name"].strip().lower() == name.strip().lower():
             
@@ -83,36 +71,34 @@ def check(manager):
             break
 
     if not found:
-        data.append({"name": name, "genre": genre, "author": author, "date": date, "number": number})
+        db.append({"name": name, "genre": genre, "author": author, "date": date, "number": number})
         print(f"Added new book '{name}' as number {number}")
 
-    manager.save_data(data)
+    manager.save_data(db)
 
 
-def remove(manager):
+def remove(manager, data):
     clear_terminal()
     found = False
-    data = manager.load_data()
+    db = manager.load_data()
 
-    #Shows all books in data base
-    print("Choose between one of those books:")
-    for book in data:
-        print(f"Name: {book['name']}, Number: {book['number']}")
-    choice = input()
+    choice = data["name"]
 
     #removing section
-    for book in data:
+    for book in db:
         if book["name"] == choice:
             found = True
+            a=book["number"]
+            print(a)
             if book["number"] > 1:
                 book["number"] -= 1
             else:
-                data.remove(book)
+                db.remove(book)
+    print(f"Removing book: {choice}")
     if not found:
         print("Didn't found book, passing")
         
-    manager.save_data(data)
-
+    manager.save_data(db)
 def searching(manager):
     clear_terminal()
     data = manager.load_data()
@@ -146,11 +132,6 @@ def clear_terminal():
         _ = os.system("clear")
 
 
-
-    
-
-
-add_remove()
 
 
 

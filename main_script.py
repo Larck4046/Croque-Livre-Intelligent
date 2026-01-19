@@ -1,6 +1,8 @@
 from flask import Flask, render_template, jsonify, request
 import json
 import os
+from scanner import Scan  # Import de la classe Scan
+from data_base import FileManager
 # marche pas -  from scanner import Scan  # Import de la classe Scan
 
 site = Flask(__name__)
@@ -34,45 +36,49 @@ def get_books():
 
 @site.route('/api/books', methods=['POST'])
 def add_book():
-    try:
-        book_data = request.get_json()
+    sorting = FileManager('data_base.json')
+    book_data = request.get_json()
+    sorting.add_remove(0, book_data)
+    return jsonify({'success': True, 'message': 'Livre ajouté avec succès'})
+    # try:
+    #     book_data = request.get_json()
         
         # Charger les données existantes
-        if os.path.exists('data_base.json'):
-            try:
-                with open('data_base.json', 'r') as f:
-                    data = json.load(f)
-            except json.JSONDecodeError:
-                data = []
-        else:
-            data = []
+        # if os.path.exists('data_base.json'):
+        #     try:
+        #         with open('data_base.json', 'r') as f:
+        #             data = json.load(f)
+        #     except json.JSONDecodeError:
+        #         data = []
+        # else:
+        #     data = []
         
         # Vérifier si le livre existe déjà
-        existing_book = None
-        for book in data:
-            if book['name'].strip().lower() == book_data['name'].strip().lower():
-                existing_book = book
-                break
+    #     existing_book = None
+    #     for book in data:
+    #         if book['name'].strip().lower() == book_data['name'].strip().lower():
+    #             existing_book = book
+    #             break
         
-        if existing_book:
-            existing_book['number'] += 1
-        else:
-            new_book = {
-                'name': book_data['name'],
-                'author': book_data['author'],
-                'date': book_data['date'],
-                'genre': book_data['genre'],
-                'number': 1
-            }
-            data.append(new_book)
+    #     if existing_book:
+    #         existing_book['number'] += 1
+    #     else:
+    #         new_book = {
+    #             'name': book_data['name'],
+    #             'author': book_data['author'],
+    #             'date': book_data['date'],
+    #             'genre': book_data['genre'],
+    #             'number': 1
+    #         }
+    #         data.append(new_book)
         
-        # Sauvegarder
-        with open('data_base.json', 'w') as f:
-            json.dump(data, f, indent=4)
+    #     # Sauvegarder
+    #     with open('data_base.json', 'w') as f:
+    #         json.dump(data, f, indent=4)
         
-        return jsonify({'success': True, 'message': 'Livre ajouté avec succès'})
-    except Exception as e:
-        return jsonify({'success': False, 'message': str(e)}), 400
+    #     return jsonify({'success': True, 'message': 'Livre ajouté avec succès'})
+    # except Exception as e:
+    #     return jsonify({'success': False, 'message': str(e)}), 400
 
 @site.route('/api/scan-isbn', methods=['POST'])
 def scan_isbn():
@@ -168,48 +174,52 @@ def scan_isbn():
 
 @site.route('/api/borrow', methods=['POST'])
 def borrow_book():
-    try:
-        data = request.get_json()
-        book_name = data.get('name', '').strip()
+    sorting = FileManager('data_base.json')
+    book_data = request.get_json()
+    sorting.add_remove(1, book_data)
+    return jsonify({'success': True, 'message': 'Livre emprunté avec succès'})
+    # try:
+    #     data = request.get_json()
+    #     book_name = data.get('name', '').strip()
         
-        if not book_name:
-            return jsonify({'success': False, 'message': 'Nom du livre requis'}), 400
+    #     if not book_name:
+    #         return jsonify({'success': False, 'message': 'Nom du livre requis'}), 400
         
-        # Charger les données
-        if os.path.exists('data_base.json'):
-            try:
-                with open('data_base.json', 'r') as f:
-                    db_data = json.load(f)
-            except json.JSONDecodeError:
-                db_data = []
-        else:
-            db_data = []
+    #     # Charger les données
+    #     if os.path.exists('data_base.json'):
+    #         try:
+    #             with open('data_base.json', 'r') as f:
+    #                 db_data = json.load(f)
+    #         except json.JSONDecodeError:
+    #             db_data = []
+    #     else:
+    #         db_data = []
         
-        # Trouver le livre
-        book_found = None
-        for book in db_data:
-            if book['name'].strip().lower() == book_name.lower():
-                book_found = book
-                break
+    #     # Trouver le livre
+    #     book_found = None
+    #     for book in db_data:
+    #         if book['name'].strip().lower() == book_name.lower():
+    #             book_found = book
+    #             break
         
-        if not book_found:
-            return jsonify({'success': False, 'message': 'Livre non trouvé'}), 404
+    #     if not book_found:
+    #         return jsonify({'success': False, 'message': 'Livre non trouvé'}), 404
         
-        # Diminuer le nombre
-        book_found['number'] -= 1
+    #     # Diminuer le nombre
+    #     book_found['number'] -= 1
         
-        if book_found['number'] <= 0:
-            # Supprimer le livre
-            db_data.remove(book_found)
+    #     if book_found['number'] <= 0:
+    #         # Supprimer le livre
+    #         db_data.remove(book_found)
         
-        # Sauvegarder
-        with open('data_base.json', 'w') as f:
-            json.dump(db_data, f, indent=4)
+    #     # Sauvegarder
+    #     with open('data_base.json', 'w') as f:
+    #         json.dump(db_data, f, indent=4)
         
-        return jsonify({'success': True, 'message': 'Livre emprunté avec succès'})
+    #     return jsonify({'success': True, 'message': 'Livre emprunté avec succès'})
         
-    except Exception as e:
-        return jsonify({'success': False, 'message': str(e)}), 500
+    # except Exception as e:
+    #     return jsonify({'success': False, 'message': str(e)}), 500
 
 @site.route('/execute_script')
 def execute_script():
