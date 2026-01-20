@@ -15,8 +15,8 @@ Main_script.py (isbn) -> scanner.py reppond (wsp scan le livre twin (aucune rece
 
 
 class Scan:
-    def __init__(self,code):
-        self.code = code
+    def __init__(self,isbn):
+        self.isbn = isbn
         self.lang = {
             "french":"Français",
             "fr":"Français",
@@ -44,9 +44,11 @@ class Scan:
             "arabic":"Arabe"
         }
         self.mois = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
-    def googleapi(self):
+
+
+    def googleapi(self,isbn):
         try:
-            info = r.get(f"https://www.googleapis.com/books/v1/volumes?q=isbn:{self.code}").json()
+            info = r.get(f"https://www.googleapis.com/books/v1/volumes?q=isbn:{isbn}").json()
             self.titre_G = info['items'][0]['volumeInfo']['title']
             self.auteur_G = info['items'][0]['volumeInfo']['authors'][0]
             self.language_G = self.lang[info['items'][0]['volumeInfo']['language']]
@@ -60,11 +62,10 @@ class Scan:
         except(KeyError):
             return False
 
-
             
-    def bookfinder(self):
+    def bookfinder(self,isbn):
         try:
-            info = r.get(f"https://www.bookfinder.com/isbn/{self.code}/")
+            info = r.get(f"https://www.bookfinder.com/isbn/{isbn}/")
             magnifique_soupe = BeautifulSoup(info.content, 'html.parser')
             self.titre_B = magnifique_soupe.find("h1", class_="text-xl font-bold text-blue-800 mb-2").text
             aut = magnifique_soupe.find("a", class_="text-blue-700 underline font-medium").text
@@ -77,27 +78,23 @@ class Scan:
             return True
         except(KeyError, AttributeError):
             return False
-    def receiver(isbn):
-        print(f"Scanning ISBN: {isbn}")
-        S = Scan(isbn)
-        if S.googleapi():
-            if S.bookfinder():
+    def receiver(self):
+        print(f"Scanning ISBN: {self.isbn}")
+        S = Scan(self.isbn)
+        if S.googleapi(self.isbn):
+            if S.bookfinder(self.isbn):
                 if re.sub(r"[^a-z0-9]", "", S.db1.lower().strip().replace("é","e")) == re.sub(r"[^a-z0-9]", "", S.db2.lower().strip().replace("é","e")):
-                    print(f"- Titre: {S.titre_G}\n- Auteur: {S.auteur_G}\n- Date de sortie: {S.date_G}\n- Langue: {S.language_G}\n- Description: {S.description_G}")
+                    return f"- Titre: {S.titre_G}\n- Auteur: {S.auteur_G}\n- Date de sortie: {S.date_G}\n- Langue: {S.language_G}\n- Description: {S.description_G}"
                 else:
-                    print("NOT match")
                     result = input(f"1: {S.titre_G} par {S.auteur_G} ({S.date_G})\n2: {S.titre_B} par {S.auteur_B} ({S.date_B})\n3: Autre")
                     # Input handling, database pulling, bars flowing
             else:
-                print("GoogleAPI")
-                print(f"- Titre: {S.titre_G}\n- Auteur: {S.auteur_G}\n- Date de sortie: {S.date_G}\n- Langue: {S.language_G}\n- Description: {S.description_G}")
-        elif S.bookfinder():
-            print("Bookfinder")
-            print(f"- Titre: {S.titre_B}\n- Auteur: {S.auteur_B}\n- Date de sortie: {S.date_B}\n- Langue: {S.language_B}")
+                return f"- Titre: {S.titre_G}\n- Auteur: {S.auteur_G}\n- Date de sortie: {S.date_G}\n- Langue: {S.language_G}\n- Description: {S.description_G}"
+        elif S.bookfinder(self.isbn):
+            return f"- Titre: {S.titre_B}\n- Auteur: {S.auteur_B}\n- Date de sortie: {S.date_B}\n- Langue: {S.language_B}"
         else:
-            print("Livre introuvable parmi 190 millions de livres")
+            return "Livre introuvable parmi 190 millions de livres"
             # input nom, auteur, etc. pour mettre dans database (database.py)
-
 
 
 # Test ISBN: 9782072947407 (La ferme des animaux de George Orwell, shoutout les cours de français et la révolution russe)
