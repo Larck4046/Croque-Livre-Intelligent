@@ -93,10 +93,12 @@ def scan_isbn():
 
    #     google_success = scanner.googleapi(isbn)
    #     bookfinder_success = scanner.bookfinder(isbn)
-        if result:
+        if result != False:
             sorting = FileManager('data_base.json')
             sorting.add_remove(0,result)
             return jsonify({'success': True, 'book': result})
+        else:
+            return jsonify({'success': False, 'message': 'Livre introuvable avec cet ISBN'}), 404
 
     except Exception as e:
         pass
@@ -236,4 +238,4 @@ def execute_script():
     return "Python script executed!"
 
 if __name__ == '__main__':
-    site.run(debug=True, host='0.0.0.0')
+    site.run(debug=True, host='0.0.0.0', port=5000)
