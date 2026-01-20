@@ -1,9 +1,9 @@
 [
     {
         "name": "No\u00e9mie Boucher",
-        "genre": "Romance",
-        "author": "Marek",
-        "date": "2026",
+        "genre": "Romance/Pedophelia/Incest",
+        "author": "Marek (Marek l'a creee apparemment)",
+        "date": "2026 (Marek les aime jeunes apparemment)",
         "number": 1
     },
     {
@@ -11,6 +11,13 @@
         "genre": "Sci",
         "author": "Marek",
         "date": "2026",
+        "number": 1
+    },
+    {
+        "name": "La ferme des animaux",
+        "genre": "Non sp\u00e9cifi\u00e9",
+        "author": "George Orwell",
+        "date": "9 Septembre 2021",
         "number": 1
     }
 ]
