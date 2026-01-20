@@ -1,18 +1,6 @@
 import requests as r
 import re
 from bs4 import BeautifulSoup
-from flask import jsonify
-""""
-Yo,
-Je veux que tu trouve un moyen que lorsque qu'on lance le main_script.py,
-il puisse exécuter le scanner.py et récupérer les informations du livre scanné.
-En gros, quand tu vas dans la section ajout d'un livre par ISBN manuellement, ton code n'arrive pas, ou n'essaye pas, à récupérer les infos que le mainscript.py envoie au scanner.py.
-
-Main_script.py (isbn) -> scanner.py reppond (wsp scan le livre twin (aucune reception du message de main_script.py))
-
-"""
-
-
 
 
 class Scan:
@@ -60,7 +48,7 @@ class Scan:
             self.date_G = f"{dat.split("-")[2].lstrip("0")} {self.mois[int(dat.split("-")[1]) -1 ]} {dat.split("-")[0]}"
             self.db1 = f"{self.titre_G}{self.auteur_G}"
             return True
-        except(KeyError):
+        except Exception:
             return False
 
             
@@ -74,24 +62,24 @@ class Scan:
             lang = magnifique_soupe.find_all("div", class_="text-sm mb-4")[0].text
             self.language_B = self.lang[lang[lang.find(":") + 2:].lower()]
             self.date_B = f"{dat.split("-")[2].lstrip("0")} {self.mois[int(dat.split("-")[1])-1]} {dat.split("-")[0]}" # WIP
-            self.auteur_B = f"{aut[aut.find(",") + 2:]} {aut[:aut.find(",")]}"
+            if aut.find(",") > -1:
+                self.auteur_B = f"{aut[aut.find(",") + 2:]} {aut[:aut.find(",")]}"
+                print("FINDFINFIDNIFNIFN", aut.find(","))
+            else:
+                self.auteur_B = aut
             self.db2 = f"{self.titre_B}{self.auteur_B}"
             return True
-        except(KeyError, AttributeError):
+        except Exception:
             return False
     def receiver(self):
         print(f"Scanning ISBN: {self.isbn}")
-        S = Scan(self.isbn)
-        if S.googleapi(self.isbn):
-            if S.bookfinder(self.isbn):
+        if self.googleapi(self.isbn):
 #               if re.sub(r"[^a-z0-9]", "", S.db1.lower().strip().replace("é","e")) == re.sub(r"[^a-z0-9]", "", S.db2.lower().strip().replace("é","e")): # Assi inutile -> ISBNs are universal!
-                return jsonify({"name": {S.titre_G},"author": {S.auteur_G},"date": {S.date_G},"genre": "Non sp\u00e9cifi\u00e9","number": 1})
-            else:
-                return jsonify({"name": {S.titre_G},"author": {S.auteur_G},"date": {S.date_G},"genre": "Non sp\u00e9cifi\u00e9","number": 1})
-        elif S.bookfinder(self.isbn):
-            return jsonify({"name": {S.titre_B},"author": {S.auteur_B},"date": {S.date_B},"genre": "Non sp\u00e9cifi\u00e9","number": 1})
+            return {"name": self.titre_G,"author": self.auteur_G,"date": self.date_G,"genre": "Non sp\u00e9cifi\u00e9","number": 1}
+        elif self.bookfinder(self.isbn):
+            return {"name": self.titre_B,"author": self.auteur_B,"date": self.date_B,"genre": "Non sp\u00e9cifi\u00e9","number": 1}
         else:
-            return "Livre introuvable parmi 190 millions de livres"
+            return False
             # input nom, auteur, etc. pour mettre dans database (database.py)
 
 
