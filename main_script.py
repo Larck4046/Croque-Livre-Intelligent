@@ -1,9 +1,8 @@
 from flask import Flask, render_template, jsonify, request
 import json
 import os
-from scanner import Scan  # Import de la classe Scan
+from scanner import Scan
 from data_base import FileManager
-# marche pas -  from scanner import Scan  # Import de la classe Scan
 
 site = Flask(__name__)
 
@@ -89,11 +88,9 @@ def scan_isbn():
         
         if not isbn:
             return jsonify({'success': False, 'message': 'ISBN requis'}), 400
-        # Utiliser la classe Scan pour récupérer les infos
-        from scanner import Scan  # Import de la classe Scan
         scanner = Scan(isbn)
-        google_success = scanner.googleapi()
-        bookfinder_success = scanner.bookfinder()
+        google_success = scanner.googleapi(isbn)
+        bookfinder_success = scanner.bookfinder(isbn)
 
         if google_success and bookfinder_success:
             book_info = {
