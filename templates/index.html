@@ -1,97 +1,127 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Croque-Livre — Catalogue</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Croque-Livre — Catalogue</title>
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='styles.css') }}"
+        />
+    </head>
+    <body>
+        <header>
+            <h1>📚 Catalogue Croque-Livre</h1>
+            <p>Découvrez notre collection de livres</p>
+        </header>
 
-    <header>
-        <h1>📚 Catalogue Croque-Livre</h1>
-        <p>Découvrez notre collection de livres</p>
-    </header>
+        <main>
+            <!-- Barre de recherche -->
+            <section id="search-section">
+                <input
+                    type="text"
+                    id="search-input"
+                    placeholder="Rechercher un livre..."
+                />
+            </section>
 
-    <main>
-
-        <!-- Barre de recherche -->
-        <section id="search-section">
-            <input type="text" id="search-input" placeholder="Rechercher un livre...">
-        </section>
-
-        <!-- Liste des livres -->
-        <section id="books-section">
-            <h2>Livres disponibles</h2>
-            <div id="books-container" class="grid">
-                <!-- Exemple de carte livre -->
-                <div class="book-card">
-                    <div class="book-title">Titre du Livre</div>
-                    <div class="book-author">Auteur: Nom de l'Auteur</div>
-                    <div class="book-date">Date de publication: 2023</div>
-                    <div class="book-genre">Genre: Fiction</div>
-                    <div class="book-number">Exemplaires: 1</div>
-                    <button class="book-remover">Emprunter</button>
+            <!-- Liste des livres -->
+            <section id="books-section">
+                <h2>Livres disponibles</h2>
+                <div id="books-container" class="grid">
+                    <!-- Exemple de carte livre -->
+                    <div class="book-card">
+                        <div class="book-title">Titre du Livre</div>
+                        <div class="book-author">Auteur: Nom de l'Auteur</div>
+                        <div class="book-date">Date de publication: 2023</div>
+                        <div class="book-genre">Genre: Fiction</div>
+                        <div class="book-number">Exemplaires: 1</div>
+                        <button class="book-remover">Emprunter</button>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Scanner QR et Ajout Manuel -->
-        <section id="add_section">
-            <h2>📷 Ajouter un Livre</h2>
-            
-            <!-- Boutons de basculement -->
-            <div class="add-toggle">
-                <button id="toggle-scan" class="toggle-btn active">Scanner QR</button>
-                <button id="toggle-manual" class="toggle-btn">Ajout Manuel</button>
-            </div>
+            <!-- Scanner QR et Ajout Manuel -->
+            <section id="add_section">
+                <h2>📷 Ajouter un Livre</h2>
 
-            <!-- Section Scanner QR -->
-            <div id="scan-mode" class="add-mode">
-                <p>Scannez le code QR d'un livre pour l'ajouter à la collection.</p>
-                <div id="qr-scanner">
-                    <!-- Le scanner sera intégré ici -->
+                <!-- Boutons de basculement -->
+                <div class="add-toggle">
+                    <button id="toggle-scan" class="toggle-btn active">
+                        Code barre
+                    </button>
+                    <button id="toggle-manual" class="toggle-btn">
+                        Ajout Manuel
+                    </button>
                 </div>
-                <button id="start-scan">Démarrer le scan</button>
-            </div>
 
-            <!-- Section Ajout Manuel -->
-            <div id="manual-mode" class="add-mode" style="display: none;">
-                <p>Remplissez les informations du livre manuellement.</p>
-                <form id="manual-add-form">
-                    <div class="form-group">
-                        <label for="book-name">Titre du livre:</label>
-                        <input type="text" id="book-name" required>
+                <!-- Section Scanner QR -->
+                <div id="scan-mode" class="add-mode">
+                    <p>
+                        Scannez le code barre d'un livre pour l'ajouter à la
+                        collection.
+                    </p>
+                    <div id="qr-scanner">
+                        <!-- Le scanner sera intégré ici -->
                     </div>
-                    <div class="form-group">
-                        <label for="book-author">Auteur:</label>
-                        <input type="text" id="book-author" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="book-date">Date de publication:</label>
-                        <input type="text" id="book-date" placeholder="ex: 2023">
-                    </div>
-                    <div class="form-group">
-                        <label for="book-genre">Genre:</label>
-                        <input type="text" id="book-genre" placeholder="ex: Fiction">
-                    </div>
-                    <button type="submit" id="add-book-btn">Ajouter le livre</button>
-                </form>
-                <p>Où ajouter manuellement le code ISBN (les chiffres proche du code bar)</p>
-                <form id="manual-add-isbn">
-                    <div class="form-group">
-                        <label for="book-isbn">Code ISBN:</label>
-                        <input type="text" id="book-isbn" placeholder="ex: 978-3-16-148410-0">
-                    </div>
-                    <button type="submit" id="add-book-isbn-btn">Ajouter le livre par ISBN</button>
-                </form>
-            </div>
-        </section>
+                    <button id="start-scan">Démarrer le scan</button>
+                </div>
 
-    </main>
+                <!-- Section Ajout Manuel -->
+                <div id="manual-mode" class="add-mode" style="display: none">
+                    <p>Remplissez les informations du livre manuellement.</p>
+                    <form id="manual-add-form">
+                        <div class="form-group">
+                            <label for="book-name">Titre du livre:</label>
+                            <input type="text" id="book-name" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="book-author">Auteur:</label>
+                            <input type="text" id="book-author" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="book-date">Date de publication:</label>
+                            <input
+                                type="text"
+                                id="book-date"
+                                placeholder="ex: 2023"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label for="book-genre">Genre:</label>
+                            <input
+                                type="text"
+                                id="book-genre"
+                                placeholder="ex: Fiction"
+                            />
+                        </div>
+                        <button type="submit" id="add-book-btn">
+                            Ajouter le livre
+                        </button>
+                    </form>
+                    <p>
+                        Où ajouter manuellement le code ISBN (les chiffres
+                        proche du code bar)
+                    </p>
+                    <form id="manual-add-isbn">
+                        <div class="form-group">
+                            <label for="book-isbn">Code ISBN:</label>
+                            <input
+                                type="text"
+                                id="book-isbn"
+                                placeholder="ex: 978-3-16-148410-0"
+                            />
+                        </div>
+                        <button type="submit" id="add-book-isbn-btn">
+                            Ajouter le livre par ISBN
+                        </button>
+                    </form>
+                </div>
+            </section>
+        </main>
 
-    <!-- Scripts -->
-    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-    <script src="{{ url_for('static', filename='app.js') }}"></script>
-</body>
+        <!-- Scripts -->
+        <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+        <script src="{{ url_for('static', filename='app.js') }}"></script>
+    </body>
 </html>
