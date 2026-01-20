@@ -89,16 +89,15 @@ def scan_isbn():
         if not isbn:
             return jsonify({'success': False, 'message': 'ISBN requis'}), 400
         scanner = Scan(isbn)
-        google_success = scanner.googleapi(isbn)
-        bookfinder_success = scanner.bookfinder(isbn)
+        result = scanner.receiver()
 
-        if google_success and bookfinder_success:
-            book_info = {
-                'name': scanner.titre_G,
-                'author': scanner.auteur_G,
-                'date': scanner.date_G,
-                'genre': 'Non spécifié'  # On peut ajouter une logique pour déterminer le genre
-            }
+   #     google_success = scanner.googleapi(isbn)
+   #     bookfinder_success = scanner.bookfinder(isbn)
+        if result:
+            sorting = FileManager('data_base.json')
+            sorting.add_remove(0,result)
+            return jsonify({'success': True, 'book': result})
+
     except Exception as e:
         pass
     #     """
