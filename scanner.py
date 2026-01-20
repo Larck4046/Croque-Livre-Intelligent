@@ -1,6 +1,7 @@
 import requests as r
 import re
 from bs4 import BeautifulSoup
+from flask import jsonify
 """"
 Yo,
 Je veux que tu trouve un moyen que lorsque qu'on lance le main_script.py,
@@ -53,9 +54,9 @@ class Scan:
             self.auteur_G = info['items'][0]['volumeInfo']['authors'][0]
             self.language_G = self.lang[info['items'][0]['volumeInfo']['language']]
             dat = info['items'][0]['volumeInfo']['publishedDate']
-            desc = info['items'][0]['volumeInfo']['description']
-            desc_end = desc.find(desc.split(".")[1])
-            self.description_G = desc[:desc_end] + "..»"
+#            desc = info['items'][0]['volumeInfo']['description']
+#            desc_end = desc.find(desc.split(".")[1])                           ### Apparemment inutile ###
+#            self.description_G = desc[:desc_end] + "..»"
             self.date_G = f"{dat.split("-")[2].lstrip("0")} {self.mois[int(dat.split("-")[1]) -1 ]} {dat.split("-")[0]}"
             self.db1 = f"{self.titre_G}{self.auteur_G}"
             return True
@@ -83,15 +84,12 @@ class Scan:
         S = Scan(self.isbn)
         if S.googleapi(self.isbn):
             if S.bookfinder(self.isbn):
-                if re.sub(r"[^a-z0-9]", "", S.db1.lower().strip().replace("é","e")) == re.sub(r"[^a-z0-9]", "", S.db2.lower().strip().replace("é","e")):
-                    return f"- Titre: {S.titre_G}\n- Auteur: {S.auteur_G}\n- Date de sortie: {S.date_G}\n- Langue: {S.language_G}\n- Description: {S.description_G}"
-                else:
-                    result = input(f"1: {S.titre_G} par {S.auteur_G} ({S.date_G})\n2: {S.titre_B} par {S.auteur_B} ({S.date_B})\n3: Autre")
-                    # Input handling, database pulling, bars flowing
+#               if re.sub(r"[^a-z0-9]", "", S.db1.lower().strip().replace("é","e")) == re.sub(r"[^a-z0-9]", "", S.db2.lower().strip().replace("é","e")): # Assi inutile -> ISBNs are universal!
+                return jsonify({"name": {S.titre_G},"author": {S.auteur_G},"date": {S.date_G},"genre": "Non sp\u00e9cifi\u00e9","number": 1})
             else:
-                return f"- Titre: {S.titre_G}\n- Auteur: {S.auteur_G}\n- Date de sortie: {S.date_G}\n- Langue: {S.language_G}\n- Description: {S.description_G}"
+                return jsonify({"name": {S.titre_G},"author": {S.auteur_G},"date": {S.date_G},"genre": "Non sp\u00e9cifi\u00e9","number": 1})
         elif S.bookfinder(self.isbn):
-            return f"- Titre: {S.titre_B}\n- Auteur: {S.auteur_B}\n- Date de sortie: {S.date_B}\n- Langue: {S.language_B}"
+            return jsonify({"name": {S.titre_B},"author": {S.auteur_B},"date": {S.date_B},"genre": "Non sp\u00e9cifi\u00e9","number": 1})
         else:
             return "Livre introuvable parmi 190 millions de livres"
             # input nom, auteur, etc. pour mettre dans database (database.py)
