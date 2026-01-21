@@ -176,6 +176,14 @@ h2 {
     background: #FFFFFF;
 }
 
+/* Video element styling */
+#scanner-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: #000000;
+}
+
 #start-scan {
     display: block;
     margin: 20px auto;

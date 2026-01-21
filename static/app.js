@@ -144,49 +144,83 @@ function setupAddSection() {
 
     async function initBarcodeScanner() {
         try {
-            Quagga.init({
-                inputStream: {
-                    name: "Live",
-                    type: "LiveStream",
-                    target: document.querySelector('#scanner-video'),
-                    constraints: {
-                        facingMode: "environment"
-                    }
+            // Vérifier si getUserMedia est disponible
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                scannerResult.innerHTML = '<p style="color: red;">Erreur caméra: Votre navigateur ne supporte pas l\'accès à la caméra. Assurez-vous d\'utiliser HTTPS ou localhost.</p>';
+                isScannerActive = false;
+                startScanBtn.style.display = 'inline-block';
+                stopScanBtn.style.display = 'none';
+                scannerContainer.style.display = 'none';
+                return;
+            }
+
+            // Get camera stream and display preview
+            navigator.mediaDevices.getUserMedia({
+                video: {
+                    facingMode: "environment",
+                    width: { ideal: 640 },
+                    height: { ideal: 480 }
                 },
-                decoder: {
-                    readers: [
-                        "code_128_reader",
-                        "ean_reader",
-                        "ean_8_reader",
-                        "code_39_reader",
-                        "code_39_vin_reader",
-                        "codabar_reader",
-                        "upc_reader",
-                        "upc_e_reader",
-                        "i2of5_reader"
-                    ],
-                    debug: {
-                        showCanvas: false,
-                        showPatternSuccess: false,
-                        showPattern: false,
-                        showLines: false,
-                        showDecorated: false
-                    }
-                },
-                multiple: false
-            }, function(err) {
-                if (err) {
-                    console.error("Erreur initialisation Quagga:", err);
-                    scannerResult.innerHTML = `<p style="color: red;">Erreur caméra: ${err.message}</p>`;
-                    isScannerActive = false;
-                    startScanBtn.style.display = 'inline-block';
-                    stopScanBtn.style.display = 'none';
-                    scannerContainer.style.display = 'none';
-                    return;
-                }
-                console.log("Quagga initialisé");
+                audio: false
+            }).then(function(stream) {
+                // Display video preview
+                scannerVideo.srcObject = stream;
+                scannerVideo.play();
+                console.log("Flux caméra obtenu");
                 scannerResult.innerHTML = '<p style="color: #666;">Scanner actif - placez le code-barres dans le carré</p>';
-                Quagga.start();
+
+                // Initialize Quagga for barcode detection
+                Quagga.init({
+                    inputStream: {
+                        name: "Live",
+                        type: "LiveStream",
+                        target: document.querySelector('#scanner-video'),
+                        constraints: {
+                            facingMode: "environment"
+                        }
+                    },
+                    decoder: {
+                        readers: [
+                            "code_128_reader",
+                            "ean_reader",
+                            "ean_8_reader",
+                            "code_39_reader",
+                            "code_39_vin_reader",
+                            "codabar_reader",
+                            "upc_reader",
+                            "upc_e_reader",
+                            "i2of5_reader"
+                        ],
+                        debug: {
+                            showCanvas: false,
+                            showPatternSuccess: false,
+                            showPattern: false,
+                            showLines: false,
+                            showDecorated: false
+                        }
+                    },
+                    multiple: false
+                }, function(err) {
+                    if (err) {
+                        console.error("Erreur initialisation Quagga:", err);
+                        scannerResult.innerHTML = `<p style="color: red;">Erreur caméra: ${err.message}</p>`;
+                        isScannerActive = false;
+                        startScanBtn.style.display = 'inline-block';
+                        stopScanBtn.style.display = 'none';
+                        scannerContainer.style.display = 'none';
+                        stream.getTracks().forEach(track => track.stop());
+                        return;
+                    }
+                    console.log("Quagga initialisé");
+                    Quagga.start();
+                });
+            }).catch(function(err) {
+                console.error("Erreur accès caméra:", err);
+                scannerResult.innerHTML = `<p style="color: red;">Erreur caméra: ${err.name}</p>`;
+                isScannerActive = false;
+                startScanBtn.style.display = 'inline-block';
+                stopScanBtn.style.display = 'none';
+                scannerContainer.style.display = 'none';
             });
 
             Quagga.onDetected(function(result) {
