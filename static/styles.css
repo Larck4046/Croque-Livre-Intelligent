@@ -176,6 +176,32 @@ h2 {
     background: #FFFFFF;
 }
 
+/* Video element styling */
+#scanner-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: #000000;
+}
+
+#stop-scan {
+    display: block;
+    margin: 20px auto;
+    padding: 12px 24px;
+    background: #f44336;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#stop-scan:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(244, 67, 54, 0.4);
+}
+
 #start-scan {
     display: block;
     margin: 20px auto;

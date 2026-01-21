@@ -1,6 +1,7 @@
 from flask import Flask, render_template, jsonify, request
 import json
 import os
+import sys
 from scanner import Scan
 from data_base import FileManager
 
@@ -9,6 +10,10 @@ site = Flask(__name__)
 @site.route('/')
 def index():
     return render_template("index.html")
+
+@site.route('/test-camera')
+def test_camera():
+    return render_template("test-camera.html")
 
 @site.route('/api/books')
 def get_books():
@@ -79,4 +84,19 @@ def execute_script():
     return "Python script executed!"
 
 if __name__ == '__main__':
-    site.run(debug=True, host='0.0.0.0', port=5000)
+    cert_file = 'cert.pem'
+    key_file = 'key.pem'
+    
+    # Check if certificate files exist
+    if not os.path.exists(cert_file) or not os.path.exists(key_file):
+        print(f"\n⚠️  Certificate files not found!")
+        print(f"Please run: python generate_cert.py")
+        print(f"Then start the server again.\n")
+        sys.exit(1)
+    
+    ssl_context = (cert_file, key_file)
+    print("\n✓ Starting Flask with HTTPS...")
+    print(f"  Access the app at: https://localhost:5000")
+    print(f"  (You may see a security warning - this is normal for self-signed certificates)\n")
+    
+    site.run(debug=True, host='0.0.0.0', port=5000, ssl_context=ssl_context)

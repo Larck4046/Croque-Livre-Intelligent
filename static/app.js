@@ -113,23 +113,131 @@ function setupAddSection() {
 
     // Scanner functionality
     const startScanBtn = document.getElementById('start-scan');
-    const qrScanner = document.getElementById('qr-scanner');
+    const stopScanBtn = document.getElementById('stop-scan');
+    const scannerContainer = document.getElementById('scanner-container');
+    const scannerVideo = document.getElementById('scanner-video');
+    const scannerResult = document.getElementById('scanner-result');
+    let isScannerActive = false;
 
-    startScanBtn.addEventListener('click', function() {
-        // Placeholder pour le scanner
-        qrScanner.classList.add('active');
-        qrScanner.innerHTML = '<p>Scanner activé... (Intégrez votre code ici)</p>';
+    startScanBtn.addEventListener('click', async function() {
+        if (!isScannerActive) {
+            isScannerActive = true;
+            startScanBtn.style.display = 'none';
+            stopScanBtn.style.display = 'inline-block';
+            scannerContainer.style.display = 'block';
+            scannerResult.innerHTML = '<p style="color: #666;">Initialisation du scanner...</p>';
 
-        // Ici, vous intégrerez le code pour html5-qrcode
-        // Exemple:
-        // const html5QrCode = new Html5Qrcode("qr-scanner");
-        // html5QrCode.start(...)
-
-        setTimeout(() => {
-            qrScanner.classList.remove('active');
-            qrScanner.innerHTML = '<!-- Le scanner sera intégré ici -->';
-        }, 5000); // Simuler 5 secondes
+            await initBarcodeScanner();
+        }
     });
+
+    stopScanBtn.addEventListener('click', function() {
+        stopBarcodeScanner();
+    });
+
+    async function initBarcodeScanner() {
+        try {
+            // Vérifier si getUserMedia est disponible
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                scannerResult.innerHTML = '<p style="color: red;">Erreur caméra: Votre navigateur ne supporte pas l\'accès à la caméra. Assurez-vous d\'utiliser HTTPS ou localhost.</p>';
+                isScannerActive = false;
+                startScanBtn.style.display = 'inline-block';
+                stopScanBtn.style.display = 'none';
+                scannerContainer.style.display = 'none';
+                return;
+            }
+
+            // Initialiser Quagga avec la caméra
+            Quagga.init({
+                inputStream: {
+                    name: "Live",
+                    type: "LiveStream",
+                    target: document.querySelector('#scanner-container'),
+                    constraints: {
+                        facingMode: "environment",
+                        width: { ideal: 640 },
+                        height: { ideal: 480 }
+                    }
+                },
+                decoder: {
+                    readers: [
+                        "code_128_reader",
+                        "ean_reader",
+                        "ean_8_reader",
+                        "code_39_reader",
+                        "code_39_vin_reader",
+                        "codabar_reader",
+                        "upc_reader",
+                        "upc_e_reader",
+                        "i2of5_reader"
+                    ],
+                    debug: {
+                        showCanvas: false,
+                        showPatternSuccess: false,
+                        showPattern: false,
+                        showLines: false,
+                        showDecorated: false
+                    }
+                },
+                multiple: false,
+                locator: {
+                    halfSample: true
+                }
+            }, function(err) {
+                if (err) {
+                    console.error("Erreur initialisation Quagga:", err);
+                    scannerResult.innerHTML = `<p style="color: red;">Erreur caméra: ${err.message || err}</p>`;
+                    isScannerActive = false;
+                    startScanBtn.style.display = 'inline-block';
+                    stopScanBtn.style.display = 'none';
+                    scannerContainer.style.display = 'none';
+                    return;
+                }
+                console.log("✓ Quagga initialisé");
+                Quagga.start();
+                scannerResult.innerHTML = '<p style="color: #666;">Scanner actif - placez le code-barres dans le carré</p>';
+            });
+
+            Quagga.onDetected(function(result) {
+                if (result.codeResult && result.codeResult.code) {
+                    const barcode = result.codeResult.code;
+                    console.log('✓ Code-barres détecté:', barcode);
+                    scannerResult.innerHTML = `<p style="color: green;"><strong>✓ Code détecté:</strong> ${barcode}</p>`;
+                    
+                    // Ajouter le livre par ISBN/Code-barres
+                    scanISBN(barcode);
+                    
+                    // Arrêter le scanner
+                    if (isScannerActive) {
+                        stopBarcodeScanner();
+                    }
+                }
+            });
+
+        } catch (err) {
+            console.error('Erreur Quagga:', err);
+            scannerResult.innerHTML = `<p style="color: red;">Erreur: ${err.message}</p>`;
+            isScannerActive = false;
+            startScanBtn.style.display = 'inline-block';
+            stopScanBtn.style.display = 'none';
+            scannerContainer.style.display = 'none';
+        }
+    }
+
+    function stopBarcodeScanner() {
+        isScannerActive = false;
+        startScanBtn.style.display = 'inline-block';
+        stopScanBtn.style.display = 'none';
+        scannerContainer.style.display = 'none';
+        
+        try {
+            Quagga.stop();
+        } catch (e) {
+            console.log("Quagga already stopped");
+        }
+        
+        scannerResult.innerHTML = '<p>Scanner arrêté.</p>';
+    }
 
     // Manual add form
     const addForm = document.getElementById('manual-add-form');
