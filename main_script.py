@@ -1,7 +1,6 @@
 from flask import Flask, render_template, jsonify, request
 import json
 import os
-# marche pas -  from scanner import Scan  # Import de la classe Scan
 
 site = Flask(__name__)
 

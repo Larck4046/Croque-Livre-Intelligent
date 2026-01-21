@@ -36,23 +36,35 @@
             </div>
         </section>
 
-        <!-- Scanner QR et Ajout Manuel -->
+        <!-- Scanner Code-Barres et Ajout Manuel -->
         <section id="add_section">
             <h2>📷 Ajouter un Livre</h2>
             
             <!-- Boutons de basculement -->
             <div class="add-toggle">
-                <button id="toggle-scan" class="toggle-btn active">Scanner QR</button>
+                <button id="toggle-scan" class="toggle-btn active">Scanner Code-Barres</button>
                 <button id="toggle-manual" class="toggle-btn">Ajout Manuel</button>
             </div>
 
-            <!-- Section Scanner QR -->
+            <!-- Section Scanner Code-Barres -->
             <div id="scan-mode" class="add-mode">
-                <p>Scannez le code QR d'un livre pour l'ajouter à la collection.</p>
-                <div id="qr-scanner">
-                    <!-- Le scanner sera intégré ici -->
+                <p>Scannez le code-barres (ISBN) d'un livre pour l'ajouter à la collection.</p>
+                
+                <!-- Conteneur du scanner avec preview -->
+                <div id="scanner-container" style="display: none; width: 100%; max-width: 500px; margin: 20px auto; position: relative; background: #000; border: 3px solid #333; border-radius: 8px; overflow: hidden;">
+                    <video id="scanner-video" width="100%" style="display: block; background: #000;"></video>
+                    <!-- Carré d'alignement -->
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 200px; height: 200px; border: 3px solid rgba(255, 255, 255, 0.5); border-radius: 8px; pointer-events: none;"></div>
                 </div>
-                <button id="start-scan">Démarrer le scan</button>
+                
+                <!-- Zone de résultat -->
+                <div id="scanner-result" style="margin-top: 15px; text-align: center;"></div>
+                
+                <!-- Boutons de contrôle -->
+                <div style="text-align: center; margin-top: 15px;">
+                    <button id="start-scan" style="padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">Démarrer le scan</button>
+                    <button id="stop-scan" style="display: none; padding: 10px 20px; background: #f44336; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">Arrêter le scan</button>
+                </div>
             </div>
 
             <!-- Section Ajout Manuel -->
@@ -91,7 +103,7 @@
     </main>
 
     <!-- Scripts -->
-    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js"></script>
     <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 </html>
