@@ -11,10 +11,6 @@ site = Flask(__name__)
 def index():
     return render_template("index.html")
 
-@site.route('/test-camera')
-def test_camera():
-    return render_template("test-camera.html")
-
 @site.route('/api/books')
 def get_books():
     # Charger les livres depuis data_base.json
@@ -99,4 +95,4 @@ if __name__ == '__main__':
     print(f"  Access the app at: https://localhost:5000")
     print(f"  (You may see a security warning - this is normal for self-signed certificates)\n")
     
-    site.run(debug=True, host='0.0.0.0', port=5000, ssl_context=ssl_context)
+    site.run(debug=True, host='0.0.0.0', port=5000)
