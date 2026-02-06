@@ -256,10 +256,19 @@ function setupAddSection() {
 
     // ISBN scan form
     const isbnForm = document.getElementById('manual-add-isbn');
+    const isbnInput = document.getElementById('book-isbn');
+    
+    // Auto-submit when 13 characters are reached
+    isbnInput.addEventListener('input', function() {
+        if (this.value.length === 13) {
+            isbnForm.dispatchEvent(new Event('submit'));
+        }
+    });
+    
     isbnForm.addEventListener('submit', function(e) {
         e.preventDefault();
         
-        const isbn = document.getElementById('book-isbn').value.trim();
+        const isbn = isbnInput.value.trim();
         
         if (!isbn) {
             alert('Veuillez entrer un code ISBN');
