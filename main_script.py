@@ -90,9 +90,4 @@ if __name__ == '__main__':
         print(f"Then start the server again.\n")
         sys.exit(1)
     
-    ssl_context = (cert_file, key_file)
-    print("\n✓ Starting Flask with HTTPS...")
-    print(f"  Access the app at: https://localhost:5000")
-    print(f"  (You may see a security warning - this is normal for self-signed certificates)\n")
-    
     site.run(debug=True, host='0.0.0.0', port=5000)
