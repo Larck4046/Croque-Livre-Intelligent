@@ -511,10 +511,10 @@ function setupAddSection() {
         
         // Ajouter un texte d'aide
         ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-        ctx.fillRect(scanX, scanY - 25, 200, 20);
+        ctx.fillRect(scanX - 33, scanY - 25, 220, 20);
         ctx.fillStyle = '#ff0000';
         ctx.font = '12px Arial';
-        ctx.fillText('Zone de scan - Placez le code-barres ici', scanX + 5, scanY - 10);
+        ctx.fillText('Zone de scan - Placez le code-barres ici', scanX - 31 , scanY - 11);
     }
 
     // Manual add form
