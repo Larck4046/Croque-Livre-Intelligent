@@ -90,4 +90,4 @@ if __name__ == '__main__':
         print(f"Then start the server again.\n")
         sys.exit(1)
     
-    site.run(debug=True, host='0.0.0.0', port=5000)
+    site.run(debug=True, host='0.0.0.0', port=5002)

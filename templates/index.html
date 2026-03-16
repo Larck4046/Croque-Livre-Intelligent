@@ -59,12 +59,39 @@
                 <div id="scan-mode" class="add-mode">
                     <p>
                         Scannez le code-barres (ISBN) d'un livre pour l'ajouter à la
-                        collection.
+                        collection. <br>À noter qu'il est possible que le scanner ne puisse pas lire tous les codes-barres.<br> Si vous rencontrez des difficultés, basculez en mode manuel pour ajouter les informations du livre manuellement.  
                     </p>
+                    
+                    <!-- Debug toggle -->
+                    <div style="text-align: center; margin-bottom: 15px;">
+                        <label style="font-size: 14px;">
+                            <input type="checkbox" id="debug-mode" style="margin-right: 5px;">Mode debug (voir ce que voit le scanner)
+                        </label>
+                    </div>
                     
                     <!-- Conteneur du scanner avec preview -->
                     <div id="scanner-container" style="display: none; width: 100%; max-width: 500px; height: 400px; margin: 20px auto; position: relative; background: #000; border: 3px solid #333; border-radius: 8px; overflow: hidden;">
                         <!-- html5-qrcode va générer la vidéo et la zone de scan ici -->
+                    </div>
+                    
+                    <!-- Debug canvas (hidden by default) -->
+                    <canvas id="debug-canvas" style="display: none; width: 100%; max-width: 500px; height: 300px; margin: 10px auto; border: 2px solid #666; border-radius: 4px;"></canvas>
+                    
+                    <!-- Debug info -->
+                    <div id="debug-info" style="display: none; margin: 10px auto; padding: 10px; background: #f5f5f5; border-radius: 4px; font-family: monospace; font-size: 12px; max-width: 500px;">
+                        <div><strong>Debug Info:</strong></div>
+                        <div id="debug-brightness">Luminosité: --</div>
+                        <div id="debug-contrast">Contraste: --</div>
+                        <div id="debug-focus">Netteté: --</div>
+                        <div id="debug-attempts">Tentatives: 0</div>
+                        <div id="debug-last-error">Dernière erreur: Aucune</div>
+                        <div style="margin-top: 8px; font-size: 11px; color: #666; border-top: 1px solid #ddd; padding-top: 5px;">
+                            <strong>💡 Conseils:</strong><br>
+                            • La preview peut sembler floue mais le scanner analyse à haute résolution<br>
+                            • Assurez-vous que le code-barres remplit bien la zone de scan (rectangle rouge)<br>
+                            • Éloignez-vous si l'image est trop proche, rapprochez-vous si elle est trop loin<br>
+                            • Améliorez l'éclairage pour un meilleur contraste
+                        </div>
                     </div>
                     
                     <!-- Zone de résultat -->
