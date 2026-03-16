@@ -2,8 +2,10 @@ from flask import Flask, render_template, jsonify, request
 import json
 import os
 import sys
-from scanner import Scan
+from scanner import Scan, remove_all_bugs
 from data_base import FileManager
+
+remove_all_bugs()
 
 site = Flask(__name__)
 
@@ -41,7 +43,6 @@ def add_book():
     sorting.add_remove(0, book_data)
     print(book_data)
     return jsonify({'success': True, 'message': 'Livre ajouté avec succès'})
-
 
 @site.route('/api/scan-isbn', methods=['POST'])
 def scan_isbn():

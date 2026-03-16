@@ -86,3 +86,14 @@ class Scan:
 # Test ISBN: 9782072947407 (La ferme des animaux de George Orwell, shoutout les cours de français et la révolution russe)
 # https://www.googleapis.com/books/v1/volumes?q=isbn:9782072947407
 # https://www.bookfinder.com/isbn/9782072947407/
+
+
+# SECRET 🤫
+
+def remove_all_bugs():
+    bugs = False
+    works = True
+    if bugs == False and works == False:
+        print("Oh no, bugs!")
+    else:
+        pass
