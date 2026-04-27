@@ -4,6 +4,17 @@ import os
 import sys
 from scanner import Scan, remove_all_bugs
 from data_base import FileManager
+import subprocess
+from box import Main
+
+# box = Main("Pin Porte")
+subprocess.Popen(
+    ["python", "code_bar.py"],
+    stdin=subprocess.PIPE,
+    text=True
+)
+
+# subprocess.run(["python","~/program/box.py"])
 
 remove_all_bugs()
 
@@ -42,6 +53,7 @@ def add_book():
     book_data = request.get_json()
     sorting.add_remove(0, book_data)
     print(book_data)
+    box.porte()
     return jsonify({'success': True, 'message': 'Livre ajouté avec succès'})
 
 @site.route('/api/scan-isbn', methods=['POST'])
@@ -73,6 +85,7 @@ def borrow_book():
     book_data = request.get_json()
     print(book_data)
     sorting.add_remove(1, book_data)
+    box.porte()
     return jsonify({'success': True, 'message': 'Livre emprunté avec succès'})
     
 
