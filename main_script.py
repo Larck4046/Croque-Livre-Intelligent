@@ -2,7 +2,7 @@ from flask import Flask, render_template, jsonify, request
 import json
 import os
 import sys
-from scanner import Scan, remove_all_bugs
+from scanner import Scan
 from data_base import FileManager
 import threading
 from time import sleep

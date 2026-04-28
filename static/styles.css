@@ -310,6 +310,33 @@ h2 {
     transform: scale(1.05);
     box-shadow: 0 4px 15px rgba(210, 105, 30, 0.4);
 }
+
+footer#about-footer {
+    background: rgba(238, 202, 173, 0.92);
+    padding: 30px 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    margin-top: 20px;
+}
+
+footer#about-footer .footer-content {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+footer#about-footer h2 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    color: #8B4513;
+}
+
+footer#about-footer p {
+    font-size: 1rem;
+    color: #4b2f1c;
+    line-height: 1.8;
+}
+
 @media (max-width: 768px) {
     .grid {
         grid-template-columns: 1fr;

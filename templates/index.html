@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Croque-Livre — Catalogue</title>
+        <title>Croque-Livre Intelligent</title>
         <link
             rel="stylesheet"
             href="{{ url_for('static', filename='styles.css') }}"
@@ -12,7 +12,7 @@
     <body>
         <header>
             <h1>📚 Catalogue Croque-Livre</h1>
-            <p>Découvrez notre collection de livres</p>
+            <p>SVP, ne rien prendre du matériel généreusement mis a disposition (Ça côute chère!)</p>
         </header>
 
         <main>
@@ -41,20 +41,12 @@
                 </div>
             </section>
 
-            <!-- Scanner QR et Ajout Manuel -->
             <section id="add_section">
-                <h2>� Ajouter un Livre</h2>
-
-                <!-- Boutons de basculement -->
-                <div class="add-toggle">
-                    <button id="toggle-manual" class="toggle-btn active">
-                        Ajout Manuel
-                    </button>
-                </div>
+                <h2>📖 Ajouter un Livre</h2>
 
                 <!-- Section Ajout Manuel -->
                 <div id="manual-mode" class="add-mode">
-                    <p>Remplissez les informations du livre manuellement.</p>
+                    <p>Remplissez les informations du livre manuellement ou utliser le lecteur de code barre.</p>
                     <form id="manual-add-form">
                         <div class="form-group">
                             <label for="book-name">Titre du livre:</label>
@@ -105,6 +97,20 @@
                 </div>
             </section>
         </main>
+
+        <footer id="about-footer">
+            <div class="footer-content">
+                <h2>À propos de nous</h2>
+                <p>
+                    Le Croque-Livre Intelligent est un projet de bibliothèque
+                    communautaire qui vise à rendre la lecture accessible à
+                    tous. Tous peuvent emprunter des livres gratuitement,
+                    sans inscription, et les déposer à tout moment.
+                    Notre objectif est de promouvoir la culture et le partage
+                    de connaissances.
+                </p>
+            </div>
+        </footer>
 
         <!-- Scripts -->
         <script src="{{ url_for('static', filename='app.js') }}"></script>

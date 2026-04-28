@@ -162,10 +162,10 @@ function addBook(bookData) {
 
 function scanISBN(isbn) {
     // Afficher un message de chargement
-    const submitBtn = document.getElementById('add-book-isbn-btn');
-    const originalText = submitBtn.textContent;
-    submitBtn.textContent = 'Recherche en cours...';
-    submitBtn.disabled = true;
+    // const submitBtn = document.getElementById('add-book-isbn-btn');
+    // const originalText = submitBtn.textContent;
+    // submitBtn.textContent = 'Recherche en cours...';
+    // submitBtn.disabled = true;
 
     fetch('/api/scan-isbn', {
         method: 'POST',
@@ -198,27 +198,26 @@ function scanISBN(isbn) {
 }
 
 function borrowBook(bookName) {
-    if (confirm(`Voulez-vous emprunter "${bookName}" ?`)) {
-        fetch('/api/borrow', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ name: bookName })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Livre emprunté avec succès!');
-                // Reload books
-                loadBooks();
-            } else {
-                alert('Erreur lors de l\'emprunt: ' + data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Erreur:', error);
-            alert('Erreur lors de l\'emprunt');
-        });
-    }
+    fetch('/api/borrow', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name: bookName })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // alert('Livre emprunté avec succès!');
+            // Reload books
+            loadBooks();
+        } else {
+            alert('Erreur lors de l\'emprunt: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Erreur:', error);
+        alert('Erreur lors de l\'emprunt');
+    });
+
 }
