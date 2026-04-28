@@ -4,19 +4,53 @@ import os
 import sys
 from scanner import Scan, remove_all_bugs
 from data_base import FileManager
-import subprocess
-from box import Main
+import threading
+from time import sleep
+from gpiozero import LED, Button
+import evdev
 
-# box = Main("Pin Porte")
-subprocess.Popen(
-    ["python", "code_bar.py"],
-    stdin=subprocess.PIPE,
-    text=True
-)
+class DoorSystem:
+    def __init__(self, relay_pin, sensor_pin, led_v, led_r):
+        self.relay = LED(relay_pin)
+        self.sensor = Button(sensor_pin)
+        self.led_v = LED(led_v)
+        self.led_r = LED(led_r)
 
-# subprocess.run(["python","~/program/box.py"])
+    def monitor(self):
+        while True:
+            if self.sensor.is_pressed:
+                self.led_v.on()
+                self.led_r.off()
+            else:
+                self.led_v.off()
+                self.led_r.on()
+            sleep(0.1)
 
-remove_all_bugs()
+    def open_door(self):
+        self.relay.on()
+        sleep(0.3)
+        self.relay.off()
+    def scanner_loop(self):
+        while True:
+            try:
+                event = input()
+                print("here")
+                print(f"Scanned: {event}")
+               	s = Scan(event)
+                result = s.receiver()
+                if result != False:
+                        sorting = FileManager('./data_base.json')
+                        sorting.add_remove(0,result)
+                        
+                        #return jsonify({'success': True, 'book': result})
+                else:
+            	        #return jsonify({'success': False, 'message': 'Livre introuvable avec cet ISBN'}), 404
+                        pass
+                del s
+            except EOFError:
+                pass
+
+door = DoorSystem(5, 13, 6, 12)
 
 site = Flask(__name__)
 
@@ -53,7 +87,7 @@ def add_book():
     book_data = request.get_json()
     sorting.add_remove(0, book_data)
     print(book_data)
-    box.porte()
+    door.open_door()
     return jsonify({'success': True, 'message': 'Livre ajouté avec succès'})
 
 @site.route('/api/scan-isbn', methods=['POST'])
@@ -85,7 +119,7 @@ def borrow_book():
     book_data = request.get_json()
     print(book_data)
     sorting.add_remove(1, book_data)
-    box.porte()
+    door.open_door()
     return jsonify({'success': True, 'message': 'Livre emprunté avec succès'})
     
 
@@ -104,4 +138,6 @@ if __name__ == '__main__':
         print(f"Then start the server again.\n")
         sys.exit(1)
     
-    site.run(debug=True, host='0.0.0.0', port=5002)
+    threading.Thread(target=door.monitor, daemon=True).start()
+    threading.Thread(target=door.scanner_loop, daemon=True).start()
+    site.run(debug=False, host='0.0.0.0', port=5002)
