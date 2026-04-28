@@ -41,6 +41,7 @@ class DoorSystem:
                 if result != False:
                         sorting = FileManager('./data_base.json')
                         sorting.add_remove(0,result)
+                        self.open_door()
                         
                         #return jsonify({'success': True, 'book': result})
                 else:

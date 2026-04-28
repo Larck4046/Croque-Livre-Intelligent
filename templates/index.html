@@ -43,69 +43,17 @@
 
             <!-- Scanner QR et Ajout Manuel -->
             <section id="add_section">
-                <h2>📷 Ajouter un Livre</h2>
+                <h2>� Ajouter un Livre</h2>
 
                 <!-- Boutons de basculement -->
                 <div class="add-toggle">
-                    <button id="toggle-scan" class="toggle-btn active">
-                        Code barre
-                    </button>
-                    <button id="toggle-manual" class="toggle-btn">
+                    <button id="toggle-manual" class="toggle-btn active">
                         Ajout Manuel
                     </button>
                 </div>
 
-                <!-- Section Scanner Code-Barres -->
-                <div id="scan-mode" class="add-mode">
-                    <p>
-                        Scannez le code-barres (ISBN) d'un livre pour l'ajouter à la
-                        collection. <br>À noter qu'il est possible que le scanner ne puisse pas lire tous les codes-barres.<br> Si vous rencontrez des difficultés, basculez en mode manuel pour ajouter les informations du livre manuellement.  
-                    </p>
-                    
-                    <!-- Debug toggle -->
-                    <div style="text-align: center; margin-bottom: 15px;">
-                        <label style="font-size: 14px;">
-                            <input type="checkbox" id="debug-mode" style="margin-right: 5px;">Mode debug (voir ce que voit le scanner)
-                        </label>
-                    </div>
-                    
-                    <!-- Conteneur du scanner avec preview -->
-                    <div id="scanner-container" style="display: none; width: 100%; max-width: 500px; height: 400px; margin: 20px auto; position: relative; background: #000; border: 3px solid #333; border-radius: 8px; overflow: hidden;">
-                        <!-- html5-qrcode va générer la vidéo et la zone de scan ici -->
-                    </div>
-                    
-                    <!-- Debug canvas (hidden by default) -->
-                    <canvas id="debug-canvas" style="display: none; width: 100%; max-width: 500px; height: 300px; margin: 10px auto; border: 2px solid #666; border-radius: 4px;"></canvas>
-                    
-                    <!-- Debug info -->
-                    <div id="debug-info" style="display: none; margin: 10px auto; padding: 10px; background: #f5f5f5; border-radius: 4px; font-family: monospace; font-size: 12px; max-width: 500px;">
-                        <div><strong>Debug Info:</strong></div>
-                        <div id="debug-brightness">Luminosité: --</div>
-                        <div id="debug-contrast">Contraste: --</div>
-                        <div id="debug-focus">Netteté: --</div>
-                        <div id="debug-attempts">Tentatives: 0</div>
-                        <div id="debug-last-error">Dernière erreur: Aucune</div>
-                        <div style="margin-top: 8px; font-size: 11px; color: #666; border-top: 1px solid #ddd; padding-top: 5px;">
-                            <strong>💡 Conseils:</strong><br>
-                            • La preview peut sembler floue mais le scanner analyse à haute résolution<br>
-                            • Assurez-vous que le code-barres remplit bien la zone de scan (rectangle rouge)<br>
-                            • Éloignez-vous si l'image est trop proche, rapprochez-vous si elle est trop loin<br>
-                            • Améliorez l'éclairage pour un meilleur contraste
-                        </div>
-                    </div>
-                    
-                    <!-- Zone de résultat -->
-                    <div id="scanner-result" style="margin-top: 15px; text-align: center;"></div>
-                    
-                    <!-- Boutons de contrôle -->
-                    <div style="text-align: center; margin-top: 15px;">
-                        <button id="start-scan" style="padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">Démarrer le scan</button>
-                        <button id="stop-scan" style="display: none; padding: 10px 20px; background: #f44336; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">Arrêter le scan</button>
-                    </div>
-                </div>
-
                 <!-- Section Ajout Manuel -->
-                <div id="manual-mode" class="add-mode" style="display: none">
+                <div id="manual-mode" class="add-mode">
                     <p>Remplissez les informations du livre manuellement.</p>
                     <form id="manual-add-form">
                         <div class="form-group">
@@ -159,7 +107,6 @@
         </main>
 
         <!-- Scripts -->
-        <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
         <script src="{{ url_for('static', filename='app.js') }}"></script>
     </body>
 </html>
